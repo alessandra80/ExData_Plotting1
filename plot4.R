@@ -1,10 +1,13 @@
+#setting locale language to english
+user_lang <- Sys.getlocale("LC_TIME")
+Sys.setlocale("LC_TIME", "en_US.utf8")
 #reading data
 data <- read.table("./household_power_consumption.txt", header = TRUE, 
                    stringsAsFactors = FALSE, sep = ";", na.string = "?")
 #selecting right dates and opening png device
 gooddate <- data[data$Date %in% c("1/2/2007","2/2/2007"),]
 gooddate$Date.Time <- strptime(paste(gooddate$Date, gooddate$Time),  format = "%d/%m/%Y %H:%M:%S")
-png(file = "./ExData_Plotting1/ExData_Plotting1/plot4.png", width = 480, height = 480)
+png(file = "./ExData_Plotting1/plot4.png", width = 480, height = 480)
 #plotting data
 library(datasets)
 par(mfcol= c(2,2))
@@ -21,3 +24,5 @@ with(gooddate, plot(Date.Time, Voltage, type="l",
 with(gooddate, plot(Date.Time, Global_reactive_power, type="l",
                     ylab = "Global_reactive_power", xlab = "datetime"))
 dev.off()
+#resetting locale language to user language
+Sys.setlocale("LC_TIME", user_lang)
